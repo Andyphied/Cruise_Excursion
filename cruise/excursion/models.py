@@ -2,7 +2,10 @@ from django.db import models
 
 
 class Typology(models.Model):
-    number = models.SmallIntegerField(unique= True)
+    number = models.CharField(max_length=4, unique= True)
+
+    def __str__(self):
+        return self.number
 
     class Meta:
         '''
@@ -11,7 +14,10 @@ class Typology(models.Model):
         db_table = "typology"
 
 class Language(models.Model):
-    name = models.CharField(max_length=2)
+    name = models.CharField(max_length=2, unique= True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         '''
@@ -22,7 +28,7 @@ class Language(models.Model):
 
 class Excursion(models.Model):
 
-    id = models.BigIntegerField(primary_key= True)
+    id = models.CharField(max_length=100, primary_key=True)
     name = models.CharField(max_length=100)
     detailPageName = models.CharField(max_length=100)
     typology = models.ManyToManyField(Typology)
@@ -39,42 +45,13 @@ class Excursion(models.Model):
     shortDescription = models.CharField(max_length=100,blank=True)
     longDescription = models.TextField(blank=True)
     externalContent = models.BooleanField(default=False)
-    minimumAge = models.PositiveSmallIntegerField(blank=True)
+    minimumAge = models.CharField(max_length=3, blank=True)
     wheelChairAccessible = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
 
-    @classmethod
-    def create(cls, **kwargs):
-        excursion = cls.objects.create(
-            id = kwargs['id'],
-            name = kwargs['name'],
-            detailPageName = kwargs['detailPageName'],
-            portID = kwargs['portID'],
-            type = kwargs['type'],
-            activityLevel = kwargs['activityLevel'],
-            collectionType = kwargs['collectionType'],
-            duration = kwargs['duration'],
-            priceLevel = kwargs['priceLevel'],
-            currency = kwargs['currency'],
-            mealInfo = kwargs['mealInfo'],
-            status = kwargs['status'],
-            shortDescription = kwargs['shortDescription'],
-            longDescription = kwargs['longDescription'],
-            externalContent = kwargs['externalContent'],
-            minimumAge = kwargs['minimumAge'],
-            wheelChairAccessible = kwargs['wheelChairAccessible'],
-            featured = kwargs['featured'],
-        )
 
-        for typology_number in kwargs['typology']:
-            typology, created = Typology.objects.get_or_create(name=typology_number)
-            excursion.typology.add(typology)
-
-        for language_name in kwargs['language']:
-            language, created = Language.objects.get_or_create(name=language_name)
-            excursion.language.add(language)
-
-        return excursion
+    def __str__(self):
+        return self.name
 
     class Meta:
         '''

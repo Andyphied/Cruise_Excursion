@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Excursion
+from .models import Excursion, Language,Typology
 
-# Register your models here.
-admin.site.register(Excursion)
+theModels = [Excursion, Language, Typology]
+admin.site.register(theModels)
