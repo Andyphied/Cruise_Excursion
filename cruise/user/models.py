@@ -10,7 +10,7 @@ class UserManager(BaseUserManager):
     '''
     def create_user(self, email, password=None):
         """
-        Create and return a `User` with an email, username and password.
+        Create and return a `User` with an email and password.
         """
         if not email:
             raise ValueError('Users Must Have an email address')
